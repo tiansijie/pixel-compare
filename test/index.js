@@ -1,6 +1,6 @@
-const pixelDiff = require("../index");
+const pixelCompare = require("../index");
 
-pixelDiff({
+pixelCompare({
 	basedImage: "./test/test-images/dragon1.png",
 	testImage: "./test/test-images/dragon2.png",
 	outputImage: "./test/output-images/result.png"

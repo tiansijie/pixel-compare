@@ -1,10 +1,14 @@
 {
   "name": "pixel-compare",
   "version": "1.0.0",
-  "description": "",
+  "description": "compare pixel of image for PNG, JPEG or DataURL.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+   "type": "git",
+   "url": "https://github.com/tiansijie/pixel-compare.git"
   },
   "author": "Sijie Tian",
   "license": "MIT",

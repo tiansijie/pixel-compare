@@ -25,12 +25,12 @@ module.exports = function(args) {
 	}
 
 	const basedImagePromise = new Promise((resolve, reject) => {
-			getPixels(basedImagePath, function(err, pixels){
-				if (err) {
-					reject("Reading based image failed" + err);
-				}
-				resolve(pixels);
-			});
+		getPixels(basedImagePath, function(err, pixels){
+			if (err) {
+				reject("Reading based image failed" + err);
+			}
+			resolve(pixels);
+		});
 	});
 
 	const testImagePromise = new Promise((resolve, reject) => {
