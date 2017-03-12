@@ -16,6 +16,9 @@ pixelCompare({
 });
 ```
 
+| Base Image        | Test Image           | Result Image  |
+| ------------- |:-------------:| -----:|
+| <img src="./test/test-images/dragon1.png" width="160">      | <img src="./test/test-images/dragon2.png" width="160"> | <img src="./test/output-images/result.png" width="160"> |
 
 install
 -------
