@@ -1,6 +1,6 @@
 {
   "name": "pixel-compare",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "compare pixel of image for PNG, JPEG or DataURL.",
   "main": "index.js",
   "scripts": {
