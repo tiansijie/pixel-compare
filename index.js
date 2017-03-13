@@ -11,33 +11,10 @@ module.exports = function(args) {
 	const baseColor = args.baseColor || [255, 0, 0, 255];
 	const testColor = args.testColor || [0, 255, 0, 255];
 
-	if (!basedImagePath) {
-		console.error("Need to provide basedImage");
-		process.exit(1);
-	}
-
-	if (!testImagePath) {
-		console.error("Need to provide testImage");
-		process.exit(1);
-	}
-
-	let imageType;
-	if (outputImagePath) {
-		const outputImagePathLength = outputImagePath.length;
-		const isJpeg = outputImagePath.indexOf(".jpeg") === (outputImagePathLength - 5);
-		const isJpg = outputImagePath.indexOf(".jpg") === (outputImagePathLength - 4);
-		const isPng = outputImagePath.indexOf(".png") === (outputImagePathLength - 4);
-		if (!isJpeg && !isJpg && !isPng) {
-			console.error("Output image type is not supported");
-			process.exit(1);
-		}
-		imageType = isJpeg ? "jpeg" : (isPng ? "png" : "jpg");
-	}
-
 	const basedImagePromise = new Promise((resolve, reject) => {
 		getPixels(basedImagePath, function(err, pixels){
 			if (err) {
-				reject("Reading based image failed" + err);
+				reject(`Reading based image failed. ${err}`);
 			}
 			resolve(pixels);
 		});
@@ -46,7 +23,7 @@ module.exports = function(args) {
 	const testImagePromise = new Promise((resolve, reject) => {
 		getPixels(testImagePath, function(err, pixels){
 			if (err) {
-				reject("Reading test image failed" + err);
+				reject(`Reading test image failed. ${err}`);
 			}
 			resolve(pixels);
 		});
@@ -123,6 +100,14 @@ module.exports = function(args) {
 		}
 
 		if (outputImagePath) {
+			const outputImagePathLength = outputImagePath.length;
+			const isJpeg = outputImagePath.indexOf(".jpeg") === (outputImagePathLength - 5);
+			const isJpg = outputImagePath.indexOf(".jpg") === (outputImagePathLength - 4);
+			const isPng = outputImagePath.indexOf(".png") === (outputImagePathLength - 4);
+			if (!isJpeg && !isJpg && !isPng) {
+				throw Error("Output image type is not supported");
+			}
+			const imageType = isJpeg ? "jpeg" : (isPng ? "png" : "jpg");
 			const resultNdarray = ndarray(
 				Uint8Array.from(resultArray),
 				basedImageNdarray.shape,
