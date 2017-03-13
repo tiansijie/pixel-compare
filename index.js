@@ -114,10 +114,20 @@ module.exports = function(args) {
 				basedImageNdarray.stride,
 				basedImageNdarray.offset
 			);
-			const writable = fs.createWriteStream(outputImagePath);
-			savePixels(resultNdarray, imageType).pipe(writable);
+
+			return new Promise((resolve, reject) => {
+				const writable = fs.createWriteStream(outputImagePath);
+				const stream = savePixels(resultNdarray, imageType).pipe(writable);
+				stream.on("finish", () => {
+					resolve(isSame);
+				});
+				stream.on("error", err => {
+					reject(err);
+				});
+			});
 		}
-		return isSame;
-	})
-	.catch(console.error);
+		else {
+			return isSame;
+		}
+	});
 }

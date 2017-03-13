@@ -5,3 +5,4 @@ pixelCompare({
 	testImage: "./test/test-images/dragon2.png",
 	outputImage: "./test/output-images/result.png"
 })
+.then(isSame => console.log(isSame));
