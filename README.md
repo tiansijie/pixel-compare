@@ -39,8 +39,8 @@ api
 
 * `outputImage`: is optional, output image path
 
-* `baseColor`: is optional, array of 4 for base color is test color is all 0
+* `baseColor`: is optional, array of 4 for base color when test color is all 0
 
-* `testColor`: is optional, array of 4 for test color is base color is all 0
+* `testColor`: is optional, array of 4 for test color when base color is all 0
 
 ##### `return` a promise with a boolean to indicate if two images are the same.
