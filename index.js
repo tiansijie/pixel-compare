@@ -11,6 +11,16 @@ module.exports = function(args) {
 	const baseColor = args.baseColor || [255, 0, 0, 255];
 	const testColor = args.testColor || [0, 255, 0, 255];
 
+	if (!basedImagePath) {
+		console.error("Need to provide basedImage");
+		process.exit(1);
+	}
+
+	if (!testImagePath) {
+		console.error("Need to provide testImage");
+		process.exit(1);
+	}
+
 	let imageType;
 	if (outputImagePath) {
 		const outputImagePathLength = outputImagePath.length;
