@@ -31,9 +31,9 @@ npm insatll --save pixel-compare
 api
 ------
 
-### pixelCompare({ baseImage, testImage, [outputImage], [baseColor], [testColor] })
+### pixelCompare({ basedImage, testImage, [outputImage], [baseColor], [testColor] })
 
-* `baseImage`: base image path or data url
+* `basedImage`: based image path or data url
 
 * `testImage`: test image path or data url
 
