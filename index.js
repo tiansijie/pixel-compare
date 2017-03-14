@@ -4,38 +4,43 @@ const getPixels = require("get-pixels");
 const savePixels = require("save-pixels");
 const ndarray = require("ndarray");
 
-module.exports = function(args) {
+function getPixelsFromPath(path) {
+	return new Promise((resolve, reject) => {
+		getPixels(path, function(err, pixels){
+			if (err) {
+				reject(`Reading image failed. ${err}`);
+			}
+			resolve(pixels);
+		});
+	});
+}
+
+function pixelCompare(args) {
 	const basedImagePath = args.basedImage;
 	const testImagePath = args.testImage;
 	const outputImagePath = args.outputImage;
 	const baseColor = args.baseColor || [255, 0, 0, 255];
 	const testColor = args.testColor || [0, 255, 0, 255];
 
-	const basedImagePromise = new Promise((resolve, reject) => {
-		getPixels(basedImagePath, function(err, pixels){
-			if (err) {
-				reject(`Reading based image failed. ${err}`);
-			}
-			resolve(pixels);
-		});
-	});
-
-	const testImagePromise = new Promise((resolve, reject) => {
-		getPixels(testImagePath, function(err, pixels){
-			if (err) {
-				reject(`Reading test image failed. ${err}`);
-			}
-			resolve(pixels);
-		});
-	});
+	const basedImageIsRealized = (
+		basedImagePath.data !== undefined && 
+		basedImagePath.shape !== undefined && 
+		basedImagePath.stride !== undefined && 
+		basedImagePath.offset !== undefined
+	);
+	const basedImagePromise = basedImageIsRealized ? Promise.resolve(basedImagePath) : getPixelsFromPath(basedImagePath);
+	const testImagePromise = testImagePath ? getPixelsFromPath(testImagePath) : Promise.resolve();
 
 	return Promise.all([
 		basedImagePromise,
 		testImagePromise
 	])
-	.then(results => {
-		const basedImageNdarray = results[0];
-		const testImageNdarray = results[1];
+	.then(([basedImageNdarray, testImageNdarray]) => {
+		if (!testImageNdarray) {
+			return function partiallyAppliedPixelCompare(newArgs) {
+				return pixelCompare(Object.assign({}, args, newArgs, { basedImage: basedImageNdarray }));
+			}
+		}
 		if (
 			basedImageNdarray.shape[0] !== testImageNdarray.shape[0]
 			|| basedImageNdarray.shape[1] !== testImageNdarray.shape[1]
@@ -131,3 +136,5 @@ module.exports = function(args) {
 		}
 	});
 }
+
+module.exports = pixelCompare;
