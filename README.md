@@ -16,6 +16,25 @@ pixelCompare({
 });
 ```
 
+If you want to compare multiple images to same based images, you can do this.
+```js
+const pixelCompare = require("pixel-compare");
+pixelCompare({
+	basedImage: "./test/test-images/dragon1.png"
+})
+.then(basedImageCompareable => {
+	basedImageCompareable({
+		testImage: "./test/test-images/dragon2.png",
+		outputImage: "./test/output-images/result1.png"
+	});
+
+	basedImageCompareable({
+		testImage: "./test/test-images/dragon3.png",
+		outputImage: "./test/output-images/result2.png"
+	});
+});
+```
+
 | Base Image        | Test Image           | Result Image  |
 | ------------- |:-------------:| -----:|
 | <img src="./test/test-images/dragon1.png" width="160">      | <img src="./test/test-images/dragon2.png" width="160"> | <img src="./test/output-images/result.png" width="160"> |

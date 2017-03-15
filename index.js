@@ -23,9 +23,9 @@ function pixelCompare(args) {
 	const testColor = args.testColor || [0, 255, 0, 255];
 
 	const basedImageIsRealized = (
-		basedImagePath.data !== undefined && 
-		basedImagePath.shape !== undefined && 
-		basedImagePath.stride !== undefined && 
+		basedImagePath.data !== undefined &&
+		basedImagePath.shape !== undefined &&
+		basedImagePath.stride !== undefined &&
 		basedImagePath.offset !== undefined
 	);
 	const basedImagePromise = basedImageIsRealized ? Promise.resolve(basedImagePath) : getPixelsFromPath(basedImagePath);
@@ -35,7 +35,9 @@ function pixelCompare(args) {
 		basedImagePromise,
 		testImagePromise
 	])
-	.then(([basedImageNdarray, testImageNdarray]) => {
+	.then(results => {
+		const basedImageNdarray = results[0];
+		const testImageNdarray = results[1];
 		if (!testImageNdarray) {
 			return function partiallyAppliedPixelCompare(newArgs) {
 				return pixelCompare(Object.assign({}, args, newArgs, { basedImage: basedImageNdarray }));
