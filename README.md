@@ -7,7 +7,7 @@ example
 ```js
 const pixelCompare = require("pixel-compare");
 pixelCompare({
-    basedImage: "./test/test-images/dragon1.png",
+    baseImage: "./test/test-images/dragon1.png",
     testImage: "./test/test-images/dragon2.png",
     outputImage: "./test/output-images/result.png"
 })
@@ -20,15 +20,15 @@ If you want to compare multiple images to same based images, you can do this.
 ```js
 const pixelCompare = require("pixel-compare");
 pixelCompare({
-	basedImage: "./test/test-images/dragon1.png"
+	baseImage: "./test/test-images/dragon1.png"
 })
-.then(basedImageCompareable => {
-	basedImageCompareable({
+.then(baseImageCompareable => {
+	baseImageCompareable({
 		testImage: "./test/test-images/dragon2.png",
 		outputImage: "./test/output-images/result1.png"
 	});
 
-	basedImageCompareable({
+	baseImageCompareable({
 		testImage: "./test/test-images/dragon3.png",
 		outputImage: "./test/output-images/result2.png"
 	});
@@ -50,9 +50,9 @@ npm insatll --save pixel-compare
 api
 ------
 
-### pixelCompare({ basedImage, testImage, [outputImage], [baseColor], [testColor] })
+### pixelCompare({ baseImage, testImage, [outputImage], [baseColor], [testColor] })
 
-* `basedImage`: based image path or data url
+* `baseImage`: based image path or data url
 
 * `testImage`: test image path or data url
 

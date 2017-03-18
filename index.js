@@ -16,46 +16,46 @@ function getPixelsFromPath(path) {
 }
 
 function pixelCompare(args) {
-	const basedImagePath = args.basedImage;
+	const baseImagePath = args.baseImage;
 	const testImagePath = args.testImage;
 	const outputImagePath = args.outputImage;
 	const baseColor = args.baseColor || [255, 0, 0, 255];
 	const testColor = args.testColor || [0, 255, 0, 255];
 
-	const basedImageIsRealized = (
-		basedImagePath.data !== undefined &&
-		basedImagePath.shape !== undefined &&
-		basedImagePath.stride !== undefined &&
-		basedImagePath.offset !== undefined
+	const baseImageIsRealized = (
+		baseImagePath.data !== undefined &&
+		baseImagePath.shape !== undefined &&
+		baseImagePath.stride !== undefined &&
+		baseImagePath.offset !== undefined
 	);
-	const basedImagePromise = basedImageIsRealized ? Promise.resolve(basedImagePath) : getPixelsFromPath(basedImagePath);
+	const baseImagePromise = baseImageIsRealized ? Promise.resolve(baseImagePath) : getPixelsFromPath(baseImagePath);
 	const testImagePromise = testImagePath ? getPixelsFromPath(testImagePath) : Promise.resolve();
 
 	return Promise.all([
-		basedImagePromise,
+		baseImagePromise,
 		testImagePromise
 	])
 	.then(results => {
-		const basedImageNdarray = results[0];
+		const baseImageNdarray = results[0];
 		const testImageNdarray = results[1];
 		if (!testImageNdarray) {
 			return function partiallyAppliedPixelCompare(newArgs) {
-				return pixelCompare(Object.assign({}, args, newArgs, { basedImage: basedImageNdarray }));
+				return pixelCompare(Object.assign({}, args, newArgs, { baseImage: baseImageNdarray }));
 			}
 		}
 		if (
-			basedImageNdarray.shape[0] !== testImageNdarray.shape[0]
-			|| basedImageNdarray.shape[1] !== testImageNdarray.shape[1]
+			baseImageNdarray.shape[0] !== testImageNdarray.shape[0]
+			|| baseImageNdarray.shape[1] !== testImageNdarray.shape[1]
 		) {
 			throw Error("image sizes are not the same");
 		}
 
-		if (basedImageNdarray.shape[2] !== testImageNdarray.shape[2]) {
+		if (baseImageNdarray.shape[2] !== testImageNdarray.shape[2]) {
 			throw Error("image depths are not the same");
 		}
 
-		const width = basedImageNdarray.shape[0];
-		const height = basedImageNdarray.shape[1];
+		const width = baseImageNdarray.shape[0];
+		const height = baseImageNdarray.shape[1];
 		const resultArray = [];
 		let isSame = true;
 		for(let i = 0; i < width; ++i) {
@@ -65,10 +65,10 @@ function pixelCompare(args) {
 				const tb = testImageNdarray.get(j, i, 2);
 				const ta = testImageNdarray.get(j, i, 3);
 
-				const br = basedImageNdarray.get(j, i, 0);
-				const bg = basedImageNdarray.get(j, i, 1);
-				const bb = basedImageNdarray.get(j, i, 2);
-				const ba = basedImageNdarray.get(j, i, 3);
+				const br = baseImageNdarray.get(j, i, 0);
+				const bg = baseImageNdarray.get(j, i, 1);
+				const bb = baseImageNdarray.get(j, i, 2);
+				const ba = baseImageNdarray.get(j, i, 3);
 
 				if (tr !== br || tg !== bg || tb !== bb || ta !== ba) {
 					isSame = false;
@@ -117,9 +117,9 @@ function pixelCompare(args) {
 			const imageType = isJpeg ? "jpeg" : (isPng ? "png" : "jpg");
 			const resultNdarray = ndarray(
 				Uint8Array.from(resultArray),
-				basedImageNdarray.shape,
-				basedImageNdarray.stride,
-				basedImageNdarray.offset
+				baseImageNdarray.shape,
+				baseImageNdarray.stride,
+				baseImageNdarray.offset
 			);
 
 			return new Promise((resolve, reject) => {
