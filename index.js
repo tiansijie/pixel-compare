@@ -72,36 +72,40 @@ function pixelCompare(args) {
 
 				if (tr !== br || tg !== bg || tb !== bb || ta !== ba) {
 					isSame = false;
-					if (tr === 0 && tg === 0 && tb === 0 && ta === 0) {
-						/*test image is empty, so set base image color*/
-						resultArray.push(baseColor[0]);
-						resultArray.push(baseColor[1]);
-						resultArray.push(baseColor[2]);
-						resultArray.push(baseColor[3]);
-					}
-					else if (br === 0 && bg === 0 && bb === 0 && ba === 0){
-						/*base image is empty, so set test color*/
-						resultArray.push(testColor[0]);
-						resultArray.push(testColor[1]);
-						resultArray.push(testColor[2]);
-						resultArray.push(testColor[3]);
-					}
-					else {
-						/*blend test and base color together*/
-						const rr = baseColor[0] + testColor[0];
-						const gg = baseColor[1] + testColor[1];
-						const bb = baseColor[2] + testColor[2];
-						resultArray.push(rr);
-						resultArray.push(gg);
-						resultArray.push(bb);
-						resultArray.push(255);
+					if (outputImagePath) {
+						if (tr === 0 && tg === 0 && tb === 0 && ta === 0) {
+							/*test image is empty, so set base image color*/
+							resultArray.push(baseColor[0]);
+							resultArray.push(baseColor[1]);
+							resultArray.push(baseColor[2]);
+							resultArray.push(baseColor[3]);
+						}
+						else if (br === 0 && bg === 0 && bb === 0 && ba === 0){
+							/*base image is empty, so set test color*/
+							resultArray.push(testColor[0]);
+							resultArray.push(testColor[1]);
+							resultArray.push(testColor[2]);
+							resultArray.push(testColor[3]);
+						}
+						else {
+							/*blend test and base color together*/
+							const rr = baseColor[0] + testColor[0];
+							const gg = baseColor[1] + testColor[1];
+							const bb = baseColor[2] + testColor[2];
+							resultArray.push(rr);
+							resultArray.push(gg);
+							resultArray.push(bb);
+							resultArray.push(255);
+						}
 					}
 				}
 				else {
-					resultArray.push(br);
-					resultArray.push(bg);
-					resultArray.push(bb);
-					resultArray.push(ba);
+					if (outputImagePath) {
+						resultArray.push(br);
+						resultArray.push(bg);
+						resultArray.push(bb);
+						resultArray.push(ba);
+					}
 				}
 			}
 		}
